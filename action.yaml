@@ -20,6 +20,18 @@ inputs:
   initSql:
     description: The SQL statements to run to initialize a new database connection immediately after opening it
     required: false
+  defaultSchema:
+    description: The schema containing the flyway history file
+    required: false
+    default: public
+  table:
+    description: Name of schema history table
+    required: false
+    default: flyway_schema_history
+  outOfOrder:
+    description: Allow migrations to run out of order
+    required: false
+    default: false
 runs:
   using: docker
   image: docker://flyway/flyway:9
@@ -29,6 +41,8 @@ runs:
     FLYWAY_PASSWORD: ${{ inputs.password }}
     FLYWAY_LOCATIONS: ${{ inputs.locations }}
     FLYWAY_INIT_SQL: ${{ inputs.initSql }}
+    FLYWAY_DEFAULT_SCHEMA: ${{ inputs.defaultSchema }}
+    FLYWAY_TABLE: ${{ inputs.table }}
+    FLYWAY_OUT_OF_ORDER: ${{ inputs.outOfOrder }}
   args:
     - migrate
-    
